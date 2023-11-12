@@ -15,6 +15,8 @@ const pool = mysql.createPool({
 
 const app = express();
 
+app.use(express.static('public')); // Add this line
+
 app.use(session({
     secret: 'your secret key',
     resave: false,
