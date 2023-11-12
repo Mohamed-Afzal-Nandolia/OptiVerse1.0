@@ -62,6 +62,32 @@ app.post('/', (req, res) => {
     });
 });
 
+app.post('/register', (req, res) => {
+    let formdata = "";
+    req.on("data", (chunk) => {
+        formdata += chunk;
+    });
+
+    req.on("end", () => {
+        const data = qs.parse(formdata);
+
+        const query = "INSERT INTO users (email, password) VALUES (?, ?)";
+        const values = [data.email, data.password]; // Note: This is not secure for production
+
+        pool.getConnection((err, connection) => {
+            if (err) throw err;
+
+            connection.query(query, values, (err, result) => {
+                connection.release();
+
+                if (err) throw err;
+
+                res.redirect('/');
+            });
+        });
+    });
+});
+
 app.listen(1200, () => {
     console.log("Server is listening on port 1200");
 });
