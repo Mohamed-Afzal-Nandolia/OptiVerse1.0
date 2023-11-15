@@ -15,7 +15,7 @@
         <div class="nav-logo">
             <p>OptiVerse</p>
         </div>
-        <div class="nav-menu" id="navMenu">
+        <!-- <div class="nav-menu" id="navMenu">
             <ul>
                 <li><a href="#" class="link active">Home</a></li>
                 <li><a href="#" class="link">Topics</a></li>
@@ -24,7 +24,7 @@
                 <li><a href="#" class="link">Notifications</a></li>
                 <li><a href="#" class="link">Bookmarks</a></li>
             </ul>
-        </div>
+        </div> -->
         <div class="nav-button">
             <button class="btn white-btn" id="loginBtn" onclick="loginButton()">Sign In</button>
             <button class="btn" id="registerBtn" onclick="register()">Sign Up</button>
@@ -62,7 +62,7 @@
                     <label for="login-check"> Remember Me</label>
                 </div>
                 <div class="two">
-                    <label><a href="/forgotpassword.html">Forgot password?</a></label>
+                    <label><a href="./forgotpassword.html">Forgot password?</a></label>
                 </div>
             </div>
         </div>
@@ -118,6 +118,14 @@
     function redirectToRegister() {
         window.location.href = 'home.html';
     }
+</script>
+
+<script>
+    // This function will manipulate with the browser’s history
+    history.pushState(null, null, location.href);
+    window.onpopstate = function () {
+        history.go(1);
+    };
 </script>
 
 <script>
