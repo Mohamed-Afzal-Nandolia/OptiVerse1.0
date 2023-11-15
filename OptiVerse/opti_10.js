@@ -4,6 +4,8 @@ const session = require('express-session');
 const mysql = require("mysql");
 const qs = require("querystring");
 const fs = require("fs");
+const path = require('path');
+
 //second
 const pool = mysql.createPool({
     connectionLimit: 10,
@@ -16,7 +18,11 @@ const pool = mysql.createPool({
 //third
 var app = express();
 
-//this will make all the public folder files static, so we dont have to use the app.get() for forgotpassword and terms and conditions.
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
+
+//this will make all the public folder files static, 
+//so we dont have to use the app.get() for forgotpassword and terms and conditions.
 app.use(express.static('public')); 
 
 //fourth
@@ -29,36 +35,18 @@ app.use(session({
 //sixth
 app.get('/', (req, res) => {
     if (req.session.loggedIn) {
-        res.sendFile(__dirname + '/homepage.html');
+        pool.getConnection((err, connection) => {
+            if (err) throw err;
+            connection.query('SELECT * FROM userposts', (err, result) => {
+                connection.release();
+                if (err) throw err;
+                res.render('homepage', {posts: result});
+            });
+        });
     } else {
         res.sendFile(__dirname + '/loginpage.html');
     }
 });
-app.get('/post', (req, res) => {
-    if (req.session.loggedIn) {
-        res.sendFile(__dirname + '/post.html');
-    } else {
-        res.redirect('/');
-    }
-});
-app.get('/logout', (req, res) => {
-    req.session.destroy((err) => {
-        if(err) {
-            return console.log(err);
-        }
-        res.redirect('/loginpage.html');
-    });
-});
-app.get('/loginpage.html', (req, res) => {
-    res.sendFile(__dirname + '/loginpage.html');
-});
-
-/* Because we have use app.use(express.static('public')); this will make all the public folder files static,
-so we dont have to use the app.get() for forgotpassword and terms and conditions.
-app.get('/forgotpassword.html', (req, res) => {
-    res.sendFile(__dirname + '/forgotpassword.html');
-});
-*/
 
 // fifth, routes
 app.post('/', (req, res) => {
@@ -143,7 +131,17 @@ app.post('/register', (req, res) => {
         });
     });
 });
+app.get('/logout', function(req, res) {
+    req.session.destroy(function(err) {
+        if (err) {
+            console.log(err);
+        } else {
+            res.redirect('/');
+        }
+    });
+});
+
 // sixth
-app.listen(1200, () => {
+app.listen(1200, () => {  
     console.log("Server is listening on port 1200");
 });
