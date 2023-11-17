@@ -29,9 +29,9 @@
             <button class="btn white-btn" id="loginBtn" onclick="loginButton()">Sign In</button>
             <button class="btn" id="registerBtn" onclick="register()">Sign Up</button>
         </div>
-        <div class="nav-menu-btn">
+        <!-- <div class="nav-menu-btn">
             <i class="bx bx-menu" onclick="myMenuFunction()"></i>
-        </div>
+        </div> -->
     </nav>
 <!----------------------------- Form box ----------------------------------->    
     <div class="form-box">
@@ -40,7 +40,7 @@
 
         <div class="login-container" id="login">
             <div class="top">
-                <span>Don't have an account? <a href="#" onclick="register()">Sign Up</a></span>
+                <span>Don't have an account? <a href="" onclick="register()">Sign Up</span>
                 <header>Login</header>
             </div>
             <form id="loginform" onsubmit="submitForm(event)" method="post">
@@ -69,10 +69,10 @@
 
         <!------------------- registration form -------------------------->
         <div class="register-container" id="register">
-            <div class="top">
+            <!-- <div class="top" >
                 <span>Have an account? <a href="#" onclick="loginButton()">Login</a></span>
                 <header>Sign Up</header>
-            </div>
+            </div> -->
             <form action="/register" method="post">
                     <div class="input-box">
                         <input type="text" name="email" class="input-field" placeholder="Email">
@@ -100,7 +100,7 @@
 </div>   
 
 
-<script>
+<!-- <script>
    
    function myMenuFunction() {
     var i = document.getElementById("navMenu");
@@ -112,15 +112,15 @@
     }
    }  
  
-</script>
+</script> -->
 
-<script>
+<!-- <script>
     function redirectToRegister() {
         window.location.href = 'home.html';
     }
-</script>
+</script> -->
 
-<script>
+<!-- <script>
     var a = document.getElementById("loginBtn");
     var b = document.getElementById("registerBtn");
     var x = document.getElementById("login");
@@ -131,25 +131,7 @@ function Login() {
     window.location.href = 'home.html'; // Change this line to the correct URL
 }
 
-function loginButton(){
-    x.style.left = "4px";
-    y.style.right = "-520px";
-    a.className += " white-btn";
-    b.className = "btn";
-    x.style.opacity = 1;
-    y.style.opacity = 0;
-}
-
-function register() {
-    x.style.left = "-510px";
-    y.style.right = "5px";
-    a.className = "btn";
-    b.className += " white-btn";
-    x.style.opacity = 0;
-    y.style.opacity = 1;
-}
-
-</script>
+</script> -->
 
 <style>
 

@@ -40,7 +40,7 @@
 
         <div class="login-container" id="login">
             <div class="top">
-                <span>Don't have an account? <a href="#" onclick="register()">Sign Up</a></span>
+                <span>Don't have an account? <a onclick="register()" style=" text-decoration: underline;">Sign Up</a></span>
                 <header>Login</header>
             </div>
             <form id="loginform" onsubmit="submitForm(event)" method="post">
@@ -70,7 +70,7 @@
         <!------------------- registration form -------------------------->
         <div class="register-container" id="register">
             <div class="top">
-                <span>Have an account? <a href="#" onclick="loginButton()">Login</a></span>
+                <span>Have an account? <a onclick="loginButton()" style=" text-decoration: underline;">Login</a></span>
                 <header>Sign Up</header>
             </div>
             <form action="/register" method="post">
@@ -100,7 +100,7 @@
 </div>   
 
 
-<script>
+<!-- <script>
    
    function myMenuFunction() {
     var i = document.getElementById("navMenu");
@@ -112,13 +112,13 @@
     }
    }  
  
-</script>
+</script> -->
 
-<script>
+<!-- <script>
     function redirectToRegister() {
         window.location.href = 'home.html';
     }
-</script>
+</script> -->
 
 <script>
     // This function will manipulate with the browser’s history
@@ -134,10 +134,10 @@
     var x = document.getElementById("login");
     var y = document.getElementById("register");
 
-function Login() {
-    // Redirect to register.html
-    window.location.href = 'home.html'; // Change this line to the correct URL
-}
+// function Login() {
+//     // Redirect to register.html
+//     window.location.href = 'home.html'; // Change this line to the correct URL
+// }
 
 function loginButton(){
     x.style.left = "4px";
