@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="boxicons/css/boxicons.min.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="icon" href="optiverse2.png">
+    <!-- <link rel="stylesheet" href="homepage.css"> -->
+    <!-- <link type = "text/javascript" src="scripts.js"> -->
     <title>Homepage ∙ Optiverse</title>
 </head>
 
@@ -17,9 +19,9 @@
         </div>
         <div class="nav-menu" id="navMenu">
             <ul>
-                <li><a href="/" class="link active" id="home">Home</a></li>
+                <li><a href="#" class="link active" id="home">Home</a></li>
                 <li><a href="#" class="link">Topics</a></li>
-                <li><a href="/your-posts" class="link">Your Posts</a></li>
+                <li><a href="#" class="link">Your Posts</a></li>
                 <li><a href="#" class="link">Messages</a></li>
                 <li><a href="#" class="link">Notifications</a></li>
                 <li>
@@ -29,64 +31,32 @@
                             <i class='bx bx-search-alt-2 bx-sm' style='color:#ffffff'></i>
                         </button>
                     </form>
-
                 </li>
             </ul>
         </div>
         <div class="nav-button">
             <a href="/logout"><button class="btn white-btn" id="loginBtn">Log Out</button></a>
+            <!-- <a href="loginpage.html"><button class="btn" id="registerBtn">Sign Up</button></a> -->
         </div>
     </nav>
 
     <div class="wrapper">
-        <!-- Tags -->
+
         <form class="feed-container" id="create-post" action="/post-thought" method="post">
             <div class="feed-box">
                 <textarea name="thought" placeholder="How are you feeling today?" rows="3" cols="50" id="txtArea" required></textarea>
                 <div class="feed-interactions">
-                    <div class="dropdown">
-                        <button type="button" onclick="myFunction()" class="dropbtn post-btn">Tags</button>
-                        <div id="myDropdown" class="dropdown-content">
-                            <button type="button" onclick="appendTag('PositiveAffirmations')">Positive Affirmations</button>
-                            <button type="button" onclick="appendTag('MindfulnessAndMeditation')">Mindfulness and Meditation</a>
-                            <button type="button" onclick="appendTag('InspiringSuccessStories')">Inspiring Success Stories</a>
-                            <button type="button" onclick="appendTag('SelfImprovementAndGrowth')">Self-Improvement and Growth</a>
-                            <button type="button" onclick="appendTag('GratitudeAndPositivityJournaling')">Gratitude and Positivity Journaling</a>
-                            <button type="button" onclick="appendTag('HealthyLivingAndWellbeing')">Healthy Living and Well-being</a>
-                            <button type="button" onclick="appendTag('RandomActsOfKindness')">Random Acts of Kindness</a>
-                            <button type="button" onclick="appendTag('ConnectingWithNature')">Connecting with Nature</a>
-                            <button type="button" onclick="appendTag('QuotesAndWisdom')">Quotes and Wisdom</a>
-                            <button type="button" onclick="appendTag('MusicAndMelodiesForTheSoul')">Music and Melodies for the Soul</a>
-                            <button type="button" onclick="appendTag('HobbiesAndLeisure')">Hobbies and Leisure</a>
-                            <button type="button" onclick="appendTag('BookRecommendationsAndReviews')">Book Recommendations and Reviews</a>
-                        </div>                        
-                    </div>
                     <button type="submit" class='post-btn'>Post</button>
                 </div>
             </div>
-        </form>  
+        </form>
 
-        <div class="feed"><!-- This is only for the date to get extracted -->
-            <% function formatDate(date) { %>
-                <% var hours = date.getHours(); %>
-                <% var minutes = date.getMinutes(); %>
-                <% var day = date.getDate(); %>
-                <% var month = date.getMonth() + 1; // JavaScript months are 0-based %>
-                <% var year = date.getFullYear(); %>
-            
-                <% // pad with a zero if necessary %>
-                <% hours = hours < 10 ? '0' + hours : hours; %>
-                <% minutes = minutes < 10 ? '0' + minutes : minutes; %>
-                <% day = day < 10 ? '0' + day : day; %>
-                <% month = month < 10 ? '0' + month : month; %>
-            
-                <% return hours + ':' + minutes + ', ' + day + '/' + month + '/' + year; %>
-            <% } %>
+        <div class="feed">
             <% posts.forEach(function(post) { %>
                 <div class="feed-container">
                     <div class="feed-box">
                         <p class="user-info">
-                            <%= formatDate(new Date(post.date)) %>
+                            <%= post.date %>
                         </p>
                         <p class="post-info">
                             <%= post.post %>
@@ -99,41 +69,35 @@
                 </div>
             <% }); %>
         </div>
+
     </div>
 
     <script src="https://kit.fontawesome.com/0f84f242f1.js" crossorigin="anonymous"></script>
     <script type="text/javascript" src="scripts.js"></script>
-    
-    <script>//tags
-        function myFunction() {
-            document.getElementById("myDropdown").classList.toggle("show");
-        }
 
-        window.onclick = function(event) {
-            if (!event.target.matches('.dropbtn')) {
-                var dropdowns = document.getElementsByClassName("dropdown-content");
-                for (var i = 0; i < dropdowns.length; i++) {
-                    var openDropdown = dropdowns[i];
-                    if (openDropdown.classList.contains('show')) {
-                        openDropdown.classList.remove('show');
-                    }
-                }
-            }
-        }
+    <script>
+        // auto growing textarea in create post
 
-        function appendTag(tag) {
-            const textarea = document.getElementById('txtArea');
-            const tagsButton = document.querySelector('.dropbtn');
-            textarea.value += ' #' + tag;
-            tagsButton.textContent = tag;
-        }
+        const textarea = document.getElementById("txtArea");
+        textarea.addEventListener("keyup", e => {
+            textarea.style.height = "79px";
+            let scrollHeight = e.target.scrollHeight;
+            textarea.style.height = `${scrollHeight}px`;
+        });
 
+        // function mySearch() {
+        //     // document.getElementById('home').classList.remove('active');
+
+        //     var searchBox = document.getElementById('search');
+
+        //     searchBox.style.visibility = 'hidden';
+        // }
     </script>
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
-
         /* POPPINS FONT */
+
         /* general */
         * {
             margin: 0;
@@ -153,7 +117,9 @@
             scroll-behavior: smooth;
         }
 
+
         /* nav bar section */
+
         .nav {
             position: fixed;
             top: 0;
@@ -226,6 +192,7 @@
         }
 
         /* SEARCH BAR */
+
         .srch {
             width: 300px;
             /* max-width: 400px; */
@@ -265,6 +232,7 @@
         }
 
         /* FEED AND create-post section */
+
         .wrapper {
             display: flex;
             flex-direction: column;
@@ -322,6 +290,7 @@
 
 
         /* feed general */
+
         .feed-container {
             margin: 20px;
             width: 750px;
@@ -344,7 +313,15 @@
             padding: 0 20px;
         }
 
+
+
+
+
+
+
         /* media section */
+
+
         @media only screen and (max-width: 786px) {
             .nav-button {
                 display: none;
@@ -411,47 +388,8 @@
                 gap: 0;
             }
         }
-
-        /* tags */
-        .dropdown {
-            position: relative;
-            display: inline-block;
-        }
-
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            min-width: 160px;
-            z-index: 1;
-            background-color: #f9f9f9; /* Change this to your desired background color */
-            overflow: auto;
-            max-height: 200px; /* Change this to your desired maximum height */
-        }
-
-        .dropdown-content button {
-            background-color: #4CAF50; /* Green background */
-            border: none; /* Remove border */
-            color: white; /* White text */
-            padding: 3px 3px; /* Add some padding */
-            text-align: center; /* Center the text */
-            text-decoration: none; /* Remove underline */
-            display: inline-block;
-            font-size: 16px;
-            margin: 6px 2px;
-            cursor: pointer; /* Change cursor to pointer when hovering over the button */
-        }
-
-        .dropdown-content a {
-            color: black; /* Change this to your desired text color */
-            padding: 12px 16px;
-            text-decoration: none;
-            display: block;
-        }
-
-        .show {
-            display: block;
-        }
     </style>
+
 </body>
 
 </html>

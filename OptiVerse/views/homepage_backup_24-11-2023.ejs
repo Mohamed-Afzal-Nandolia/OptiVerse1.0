@@ -45,26 +45,35 @@
                 <textarea name="thought" placeholder="How are you feeling today?" rows="3" cols="50" id="txtArea" required></textarea>
                 <div class="feed-interactions">
                     <div class="dropdown">
-                        <button type="button" onclick="myFunction()" class="dropbtn post-btn">Tags</button>
+                        <button onclick="myFunction()" class="dropbtn post-btn">Tags</button>
                         <div id="myDropdown" class="dropdown-content">
-                            <button type="button" onclick="appendTag('PositiveAffirmations')">Positive Affirmations</button>
-                            <button type="button" onclick="appendTag('MindfulnessAndMeditation')">Mindfulness and Meditation</a>
-                            <button type="button" onclick="appendTag('InspiringSuccessStories')">Inspiring Success Stories</a>
-                            <button type="button" onclick="appendTag('SelfImprovementAndGrowth')">Self-Improvement and Growth</a>
-                            <button type="button" onclick="appendTag('GratitudeAndPositivityJournaling')">Gratitude and Positivity Journaling</a>
-                            <button type="button" onclick="appendTag('HealthyLivingAndWellbeing')">Healthy Living and Well-being</a>
-                            <button type="button" onclick="appendTag('RandomActsOfKindness')">Random Acts of Kindness</a>
-                            <button type="button" onclick="appendTag('ConnectingWithNature')">Connecting with Nature</a>
-                            <button type="button" onclick="appendTag('QuotesAndWisdom')">Quotes and Wisdom</a>
-                            <button type="button" onclick="appendTag('MusicAndMelodiesForTheSoul')">Music and Melodies for the Soul</a>
-                            <button type="button" onclick="appendTag('HobbiesAndLeisure')">Hobbies and Leisure</a>
-                            <button type="button" onclick="appendTag('BookRecommendationsAndReviews')">Book Recommendations and Reviews</a>
-                        </div>                        
+                            <a href="#">Positive Affirmations</a>
+                            <a href="#">Mindfulness and Meditation</a>
+                            <a href="#">Inspiring Success Stories</a>
+                            <a href="#">Self-Improvement and Growth</a>
+                            <a href="#">Gratitude and Positivity Journaling</a>
+                            <a href="#">Healthy Living and Well-being</a>
+                            <a href="#">Random Acts of Kindness</a>
+                            <a href="#">Connecting with Nature</a>
+                            <a href="#">Quotes and Wisdom</a>
+                            <a href="#">Music and Melodies for the Soul</a>
+                            <a href="#">Hobbies and Leisure</a>
+                            <a href="#">Book Recommendations and Reviews</a>
+                        </div>
                     </div>
                     <button type="submit" class='post-btn'>Post</button>
                 </div>
             </div>
         </form>  
+    
+        <!-- <form class="feed-container" id="create-post" action="/post-thought" method="post">
+            <div class="feed-box">
+                <textarea name="thought" placeholder="How are you feeling today?" rows="3" cols="50" id="txtArea" required></textarea>
+                <div class="feed-interactions">
+                    <button type="submit" class='post-btn'>Post</button>
+                </div>
+            </div>
+        </form> -->
 
         <div class="feed"><!-- This is only for the date to get extracted -->
             <% function formatDate(date) { %>
@@ -120,14 +129,6 @@
                 }
             }
         }
-
-        function appendTag(tag) {
-            const textarea = document.getElementById('txtArea');
-            const tagsButton = document.querySelector('.dropbtn');
-            textarea.value += ' #' + tag;
-            tagsButton.textContent = tag;
-        }
-
     </script>
 
     <style>
@@ -426,19 +427,6 @@
             background-color: #f9f9f9; /* Change this to your desired background color */
             overflow: auto;
             max-height: 200px; /* Change this to your desired maximum height */
-        }
-
-        .dropdown-content button {
-            background-color: #4CAF50; /* Green background */
-            border: none; /* Remove border */
-            color: white; /* White text */
-            padding: 3px 3px; /* Add some padding */
-            text-align: center; /* Center the text */
-            text-decoration: none; /* Remove underline */
-            display: inline-block;
-            font-size: 16px;
-            margin: 6px 2px;
-            cursor: pointer; /* Change cursor to pointer when hovering over the button */
         }
 
         .dropdown-content a {

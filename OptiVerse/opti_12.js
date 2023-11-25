@@ -24,6 +24,30 @@ app.set('views', path.join(__dirname, 'views'));
 //this will make all the public folder files static, 
 //so we dont have to use the app.get() for forgotpassword and terms and conditions.
 app.use(express.static('public')); 
+//for time
+function timeDifference(current, previous) {
+    var msPerMinute = 60 * 1000;
+    var msPerHour = msPerMinute * 60;
+    var msPerDay = msPerHour * 24;
+    var msPerMonth = msPerDay * 30;
+    var msPerYear = msPerDay * 365;
+
+    var elapsed = current - previous;
+
+    if (elapsed < msPerMinute) {
+        return Math.round(elapsed/1000) + 's';
+    } else if (elapsed < msPerHour) {
+        return Math.round(elapsed/msPerMinute) + 'm';
+    } else if (elapsed < msPerDay ) {
+        return Math.round(elapsed/msPerHour) + 'h';
+    } else if (elapsed < msPerMonth) {
+        return Math.round(elapsed/msPerDay) + 'd';
+    } else if (elapsed < msPerYear) {
+        return Math.round(elapsed/msPerMonth) + 'mo';
+    } else {
+        return Math.round(elapsed/msPerYear) + 'y';
+    }
+}
 
 //fourth
 app.use(session({
@@ -40,7 +64,7 @@ app.get('/', (req, res) => {
             connection.query('SELECT * FROM userposts', (err, result) => {
                 connection.release();
                 if (err) throw err;
-                res.render('homepage', {posts: result});
+                res.render('homepage', {posts: result, timeDifference: timeDifference});
             });
         });
     } else {
@@ -86,26 +110,22 @@ app.post('/post-thought', (req, res) => {
     req.on("data", (chunk) => {
         formdata += chunk;
     });
-
     req.on("end", () => {
         const data = qs.parse(formdata);
-
-        const query = "INSERT INTO userposts (username, post) VALUES (?, ?)";
-        const values = [req.session.usermail, data.thought]; // replace 'req.session.username' with the actual username
-
+        const date = Math.floor(Date.now() / 1000); // get current timestamp
+        const query = "INSERT INTO userposts (username, post, date, tags) VALUES (?, ?, FROM_UNIXTIME(?), ?)";
+        const values = [req.session.usermail, data.thought + ' #' + data.tag, date, data.tag]; // replace 'req.session.username' with the actual username
         pool.getConnection((err, connection) => {
             if (err) throw err;
-
             connection.query(query, values, (err, result) => {
                 connection.release();
-
                 if (err) throw err;
-
                 res.redirect('/');
             });
         });
     });
 });
+
 app.post('/register', (req, res) => {
     let formdata = "";
     req.on("data", (chunk) => {
@@ -140,22 +160,39 @@ app.get('/logout', function(req, res) {
         }
     });
 });
+//your posts
+app.get('/your-posts', (req, res) => {
+    if (req.session.loggedIn) {
+        const query = "SELECT * FROM userposts WHERE username = ?";
+        const values = [req.session.usermail];
+        pool.getConnection((err, connection) => {
+            if (err) throw err;
+            connection.query(query, values, (err, result) => {
+                connection.release();
+                if (err) throw err;
+                res.render('homepage', {posts: result, timeDifference: timeDifference});
+            });
+        });
+    } else {
+        res.sendFile(__dirname + '/loginpage.html');
+    }
+});
 
 //search filter
-//search filter
-app.get('/search', (req, res) => {
-    const query = req.query.query;
-    pool.getConnection((err, connection) => {
+app.get('/search', function(req, res) {
+    var query = req.query.query;
+
+    pool.getConnection(function(err, connection) {
         if (err) throw err;
-        // use the new query with full-text search
-        connection.query('SELECT * FROM userposts WHERE MATCH(post) AGAINST(? IN NATURAL LANGUAGE MODE) AS score ORDER BY score DESC', [query], (err, result) => {
+
+        connection.query('SELECT * FROM userposts WHERE post LIKE ?', ['%' + query + '%'], function(err, results) {
             connection.release();
             if (err) throw err;
-            res.render('search', {posts: result});
+
+            res.render('homepage', { posts: results }); // render the main page with the search results
         });
     });
 });
-
 
 // sixth
 app.listen(1200, () => {  
