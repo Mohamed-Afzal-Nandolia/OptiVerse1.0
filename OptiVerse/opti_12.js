@@ -5,6 +5,7 @@ const mysql = require("mysql");
 const qs = require("querystring");
 const fs = require("fs");
 const path = require('path');
+const bodyParser = require('body-parser');
 
 //second
 const pool = mysql.createPool({
@@ -113,19 +114,35 @@ app.post('/post-thought', (req, res) => {
     req.on("end", () => {
         const data = qs.parse(formdata);
         const date = Math.floor(Date.now() / 1000); // get current timestamp
-        const query = "INSERT INTO userposts (username, post, date, tags) VALUES (?, ?, FROM_UNIXTIME(?), ?)";
-        const values = [req.session.usermail, data.thought + ' #' + data.tag, date, data.tag]; // replace 'req.session.username' with the actual username
+
+        // Extract hashtags from the post content
+        const hashtags = data.thought.match(/#\w+/g);
+
+        const query1 = "INSERT INTO userposts (username, post, date) VALUES (?, ?, FROM_UNIXTIME(?))";
+        const values1 = [req.session.usermail, data.thought, date]; // replace 'req.session.username' with the actual username
+
         pool.getConnection((err, connection) => {
             if (err) throw err;
-            connection.query(query, values, (err, result) => {
-                connection.release();
+            connection.query(query1, values1, (err, result) => {
                 if (err) throw err;
+            
+                // If there are hashtags, store them in the other table
+                if (hashtags) {
+                    const query2 = "INSERT INTO tags (post_id, tag) VALUES ?";
+                    const values2 = hashtags.map(tag => [result.insertId, tag]); // 'result.insertId' is the ID of the inserted post
+                    connection.query(query2, [values2], (err, result) => {
+                        connection.release();
+                        if (err) throw err;
+                    });
+                } else {
+                    connection.release();
+                }
+            
                 res.redirect('/');
-            });
+            });            
         });
     });
 });
-
 app.post('/register', (req, res) => {
     let formdata = "";
     req.on("data", (chunk) => {
@@ -151,6 +168,7 @@ app.post('/register', (req, res) => {
         });
     });
 });
+
 app.get('/logout', function(req, res) {
     req.session.destroy(function(err) {
         if (err) {
@@ -193,6 +211,7 @@ app.get('/search', function(req, res) {
         });
     });
 });
+
 
 // sixth
 app.listen(1200, () => {  
